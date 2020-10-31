@@ -29,6 +29,7 @@ const sendChatAction = (value) => {
 
 const Store = (props) => {
   const [allChats, dispatch] = React.useReducer(reducer, initState);
+  const [user, setUser] = React.useState();
 
   if (!socket) {
     socket = io(':3001');
@@ -37,10 +38,13 @@ const Store = (props) => {
     });
   }
 
-  const user = 'catto' + Math.random(100).toFixed(2);
+  if (!user) {
+    const username = localStorage.getItem('chat-user');
+    setUser(username);
+  }
 
   return (
-    <CTX.Provider value={{ allChats, sendChatAction, user }}>
+    <CTX.Provider value={{ allChats, sendChatAction, user, setUser }}>
       {props.children}
     </CTX.Provider>
   );
