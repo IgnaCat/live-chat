@@ -8,6 +8,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Chip from '@material-ui/core/Chip';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
+import ScrollToBottom from 'react-scroll-to-bottom';
 
 import { CTX } from './Store';
 
@@ -34,12 +35,16 @@ const useStyles = makeStyles((theme) => ({
   users: {
     width: '20%',
     height: '450px',
+    overflow: 'auto',
+    flex: 'auto',
   },
   chat: {
     margin: '1rem',
     width: '60%',
     height: '450px',
     padding: '30px',
+    overflow: 'auto',
+    flex: 'auto',
   },
   chatBox: { width: '85%' },
   button: { width: '15%' },
@@ -47,7 +52,7 @@ const useStyles = makeStyles((theme) => ({
 
 const Home = () => {
   const classes = useStyles();
-  const { allChats, sendChatAction, user } = React.useContext(CTX);
+  const { allChats, sendChatAction, user, online } = React.useContext(CTX);
   const topics = Object.keys(allChats);
 
   const [activeTopic, setActiveTopic] = useState(topics[0]);
@@ -101,35 +106,40 @@ const Home = () => {
           </List>
         </Paper>
         <Paper className={classes.chat}>
-          {allChats[activeTopic].map((chat, i) => (
-            <div
-              className={classes.flex}
-              style={{ marginBottom: '4px' }}
-              key={i}
-            >
-              <Chip label={chat.from} />
-              <Typography variant="body1" style={{ marginLeft: '4px' }}>
-                {chat.msg}
-              </Typography>
-            </div>
-          ))}
+          <ScrollToBottom>
+            {allChats[activeTopic].map((chat, i) => (
+              <div
+                className={classes.flex}
+                style={{ marginBottom: '4px' }}
+                key={i}
+              >
+                <Chip label={chat.from} />
+                <Typography variant="body1" style={{ marginLeft: '4px' }}>
+                  {chat.msg}
+                </Typography>
+              </div>
+            ))}
+          </ScrollToBottom>
         </Paper>
         <Paper className={classes.users}>
           <Typography variant="h6" style={{ margin: '1rem' }}>
             Online:
           </Typography>
           <List>
-            {['Admin', 'Pepe'].map((topic) => (
-              <ListItem key={topic} button>
-                <ListItemText
-                  primary={topic}
-                  style={{
-                    display: 'flex',
-                    justifyContent: 'center',
-                  }}
-                />
-              </ListItem>
-            ))}
+            <ScrollToBottom>
+              {!!online &&
+                online.map((user) => (
+                  <ListItem key={user.id} button>
+                    <ListItemText
+                      primary={user.name}
+                      style={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                      }}
+                    />
+                  </ListItem>
+                ))}
+            </ScrollToBottom>
           </List>
         </Paper>
       </div>

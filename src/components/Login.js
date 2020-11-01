@@ -36,7 +36,7 @@ const Login = () => {
   const [username, setUsername] = useState(undefined);
   const [nothing, setNothing] = useState(null);
 
-  const { setUser } = useContext(CTX);
+  const { setUser, sendUserOnline } = useContext(CTX);
   const history = useHistory();
 
   const usernameHandler = (e) => {
@@ -45,11 +45,11 @@ const Login = () => {
 
   const loginHandler = async (e) => {
     e.preventDefault();
-    setNothing(null);
     if (!nothing) {
       setNothing('Please write an username');
     } else {
       setUser(username);
+      sendUserOnline(username);
       localStorage.setItem('chat-user', username);
       history.push('/home');
     }
@@ -94,6 +94,7 @@ const Login = () => {
                   setNothing('Please write an username');
                 } else {
                   setUser(username);
+                  sendUserOnline(username);
                   localStorage.setItem('chat-user', username);
                   history.push('/home');
                 }
