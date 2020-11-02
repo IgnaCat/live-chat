@@ -7,7 +7,7 @@ const users = [];
 
 app.use(cors());
 app.get('/', (req, res) => {
-  res.send('<h1>Server running</h1>');
+  res.send({ response: 'Server is up and running.' }).status(200);
 });
 
 io.on('connection', (socket) => {
@@ -32,6 +32,4 @@ io.on('connection', (socket) => {
   });
 });
 
-http.listen(3001, () => {
-  console.log('listening on *:3001');
-});
+http.listen(process.env.PORT || 5000, () => console.log(`Server has started.`));

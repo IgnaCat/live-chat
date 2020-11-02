@@ -42,7 +42,7 @@ const Store = (props) => {
   }
 
   if (!socket) {
-    socket = io(':3001');
+    socket = io('https://catto-chat.herokuapp.com/');
     socket.on('chat message', function (msg) {
       dispatch({ type: 'RECIEVED_MESSAGE', payload: msg });
     });
